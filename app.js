@@ -1,159 +1,14 @@
-(function () {
-  const DATA = [
-    { id: 'w1', tag: 'W1', title: 'Tuần 1', subtitle: 'Python Core + Xử lý dữ liệu (Pandas, NumPy)', days: [
-      { dow: 'Thứ 2', theme: 'Python Core Refresher', blocks: [
-        { time: 'Sáng · 3h', title: 'Cú pháp Python nâng cao', desc: 'Ôn comprehension (list/dict/set), generator vs iterator, decorator, context manager (with). Ghi note lại từng cái.' },
-        { time: 'Chiều · 3h', title: 'Luyện tập nhỏ', desc: '15 bài áp dụng comprehension/generator/decorator (tự viết hoặc LeetCode Easy Python).' },
-        { time: 'Tối · 1h', title: 'Flashcard OOP', desc: 'staticmethod vs classmethod, __init__ vs __new__, inheritance cơ bản.' },
-      ]},
-      { dow: 'Thứ 3', theme: 'OOP nâng cao + bắt đầu NumPy', blocks: [
-        { time: 'Sáng · 3h', title: 'Magic methods & MRO', desc: '__str__, __repr__, __eq__, multiple inheritance, Method Resolution Order.' },
-        { time: 'Chiều · 3h', title: 'NumPy cơ bản', desc: 'Array creation, dtype, shape, reshape, quy tắc broadcasting.' },
-        { time: 'Tối · 1h', title: '10 bài NumPy', desc: 'Làm bài broadcasting trên bộ "100 numpy exercises" (GitHub).' },
-      ]},
-      { dow: 'Thứ 4', theme: 'NumPy nâng cao', blocks: [
-        { time: 'Sáng · 3h', title: 'Indexing nâng cao', desc: 'Boolean mask, fancy indexing, vectorized ops vs loop.' },
-        { time: 'Chiều · 3h', title: 'Benchmark tốc độ', desc: 'Viết lại 5 đoạn code for-loop thành vectorized NumPy, so sánh thời gian chạy.' },
-        { time: 'Tối · 1h', title: 'Note tổng hợp', desc: 'Khi nào nên dùng NumPy vs pure Python list.' },
-      ]},
-      { dow: 'Thứ 5', theme: 'Pandas cơ bản', blocks: [
-        { time: 'Sáng · 3h', title: 'Series & DataFrame', desc: 'Đọc/ghi CSV/Excel, filtering, selecting với loc/iloc.' },
-        { time: 'Chiều · 3h', title: 'Dataset thật', desc: 'Load 1 dataset Kaggle, xem info, xử lý missing value (fillna/dropna).' },
-        { time: 'Tối · 1h', title: 'Flashcard', desc: 'loc vs iloc, copy() vs view, SettingWithCopyWarning là gì và cách tránh.' },
-      ]},
-      { dow: 'Thứ 6', theme: 'Pandas nâng cao: GroupBy & Merge', blocks: [
-        { time: 'Sáng · 3h', title: 'GroupBy & Pivot', desc: 'groupby, aggregate, pivot_table.' },
-        { time: 'Chiều · 3h', title: 'Merge/Join thực hành', desc: 'Bài tập: tổng hợp dữ liệu theo nhóm, merge 2 bảng (inner/outer/left/right).' },
-        { time: 'Tối · 1h', title: 'Note phân biệt', desc: 'merge vs concat vs join khác nhau ra sao.' },
-      ]},
-      { dow: 'Thứ 7', theme: 'Performance + Apply vs Vectorize', blocks: [
-        { time: 'Sáng · 3h', title: 'apply() vs vectorize', desc: 'Tại sao apply chậm, khi nào bắt buộc phải dùng apply.' },
-        { time: 'Chiều · 3h', title: 'Data cleaning end-to-end', desc: 'Dataset lộn xộn: duplicate, sai kiểu dữ liệu, outlier — xử lý từ đầu đến cuối.' },
-        { time: 'Tối · 1h', title: 'Ôn flashcard tuần 1', desc: 'Xem lại toàn bộ note đã ghi trong tuần.' },
-      ]},
-      { dow: 'Chủ nhật', theme: 'Review + Mini Project', blocks: [
-        { time: 'Sáng · 2h', title: 'Mô phỏng phỏng vấn', desc: 'Tự đặt & trả lời câu hỏi khó của tuần (vd: "Tại sao Pandas apply chậm?").' },
-        { time: 'Chiều · 3h', title: 'Mini project tuần 1', desc: 'Phân tích 1 dataset thật từ đầu đến cuối: load → clean → transform → summary. Lưu thành notebook/report.' },
-        { time: 'Tối', title: 'Nghỉ ngơi', desc: 'Xem lại note tuần, thư giãn cho tuần sau.' },
-      ]},
-    ]},
-    { id: 'w2', tag: 'W2', title: 'Tuần 2', subtitle: 'ML/DL nền tảng (scikit-learn, PyTorch)', days: [
-      { dow: 'Thứ 2', theme: 'Toán nền tảng ML', blocks: [
-        { time: 'Sáng · 3h', title: 'Gradient descent & loss', desc: 'Xem 2-3 video StatQuest: Linear Regression, Gradient Descent. Hiểu ý nghĩa, không cần chứng minh.' },
-        { time: 'Chiều · 3h', title: 'Cài Linear Regression từ đầu', desc: 'Dùng NumPy thuần, không dùng thư viện, để hiểu cơ chế cập nhật trọng số.' },
-        { time: 'Tối · 1h', title: 'Note bias-variance', desc: 'Bias-variance tradeoff, overfitting vs underfitting.' },
-      ]},
-      { dow: 'Thứ 3', theme: 'scikit-learn cơ bản', blocks: [
-        { time: 'Sáng · 3h', title: 'API cốt lõi', desc: 'fit/predict/transform, train_test_split, cross_val_score, KFold.' },
-        { time: 'Chiều · 3h', title: 'Thực hành classification', desc: 'Logistic Regression + Random Forest trên dataset (Titanic/Iris). Đánh giá accuracy/precision/recall/F1.' },
-        { time: 'Tối · 1h', title: 'Flashcard', desc: 'Precision vs Recall — khi nào ưu tiên cái nào (y tế vs spam filter).' },
-      ]},
-      { dow: 'Thứ 4', theme: 'Pipeline & Regularization', blocks: [
-        { time: 'Sáng · 3h', title: 'Pipeline & Preprocessing', desc: 'Pipeline, ColumnTransformer, StandardScaler/MinMaxScaler, one-hot encoding.' },
-        { time: 'Chiều · 3h', title: 'Regularization & tuning', desc: 'L1 (Lasso) vs L2 (Ridge), GridSearchCV/RandomizedSearchCV.' },
-        { time: 'Tối · 1h', title: 'Note', desc: 'Tại sao cần regularization, elastic net là gì.' },
-      ]},
-      { dow: 'Thứ 5', theme: 'Deep Learning nền tảng', blocks: [
-        { time: 'Sáng · 3h', title: 'Forward & Backprop', desc: 'Forward pass, backprop (chain rule ở mức khái niệm), ReLU/Sigmoid/Softmax.' },
-        { time: 'Chiều · 3h', title: 'SGD, Dropout, BatchNorm', desc: 'So sánh Batch/Mini-batch/Stochastic Gradient Descent; Dropout, BatchNorm hoạt động thế nào.' },
-        { time: 'Tối · 1h', title: 'Flashcard', desc: 'Vanishing gradient là gì, cách khắc phục (ReLU, residual connection, batchnorm).' },
-      ]},
-      { dow: 'Thứ 6', theme: 'PyTorch cơ bản', blocks: [
-        { time: 'Sáng · 3h', title: '60-min Blitz', desc: 'Tensor, autograd — so sánh thao tác với NumPy.' },
-        { time: 'Chiều · 3h', title: 'Xây MLP từ đầu', desc: 'Dataset MNIST hoặc tabular, viết training loop thủ công (forward, loss, backward, step).' },
-        { time: 'Tối · 1h', title: 'Note cơ chế', desc: 'nn.Module, optimizer.step(), loss.backward() hoạt động ra sao.' },
-      ]},
-      { dow: 'Thứ 7', theme: 'PyTorch nâng cao', blocks: [
-        { time: 'Sáng · 3h', title: 'Dataset/DataLoader custom', desc: 'Custom Dataset, batching, chuyển sang GPU (.to(device)).' },
-        { time: 'Chiều · 3h', title: 'Transfer learning', desc: 'Fine-tune 1 model CNN nhỏ (hoặc ResNet) trên tập ảnh nhỏ.' },
-        { time: 'Tối · 1h', title: 'Ôn flashcard tuần 2', desc: 'Xem lại toàn bộ note ML/DL trong tuần.' },
-      ]},
-      { dow: 'Chủ nhật', theme: 'Review + Mini Project', blocks: [
-        { time: 'Sáng · 2h', title: 'Mô phỏng phỏng vấn', desc: '10 câu hỏi ML/DL thường gặp — tự trả lời hoặc tra danh sách interview questions.' },
-        { time: 'Chiều · 3h', title: 'Mini project tuần 2', desc: 'Train + evaluate 1 model end-to-end, viết report ngắn giải thích lựa chọn model/metric.' },
-        { time: 'Tối', title: 'Nghỉ ngơi', desc: 'Thư giãn, chuẩn bị cho tuần NLP.' },
-      ]},
-    ]},
-    { id: 'w3', tag: 'W3', title: 'Tuần 3', subtitle: 'NLP + Hugging Face + Prompt Engineering', days: [
-      { dow: 'Thứ 2', theme: 'NLP cơ bản', blocks: [
-        { time: 'Sáng · 3h', title: 'Tokenization & tagging', desc: 'Stemming vs lemmatization, POS tagging, NER — làm quen NLTK.' },
-        { time: 'Chiều · 3h', title: 'Thực hành SpaCy', desc: 'Pipeline xử lý văn bản tiếng Anh (thử thêm underthesea cho tiếng Việt nếu có thời gian).' },
-        { time: 'Tối · 1h', title: 'Note so sánh', desc: 'NLTK vs SpaCy — khi nào dùng cái nào.' },
-      ]},
-      { dow: 'Thứ 3', theme: 'Kiến trúc Transformer', blocks: [
-        { time: 'Sáng · 3h', title: 'Illustrated Transformer', desc: 'Đọc blog giải thích self-attention, multi-head attention, positional encoding.' },
-        { time: 'Chiều · 2h', title: 'Tự vẽ lại sơ đồ', desc: 'Vẽ kiến trúc Transformer bằng tay, giải thích lại như đang phỏng vấn.' },
-        { time: 'Tối · 1h', title: 'Flashcard', desc: 'Encoder vs Decoder; BERT (encoder-only) vs GPT (decoder-only) khác nhau thế nào.' },
-      ]},
-      { dow: 'Thứ 4', theme: 'Hugging Face cơ bản', blocks: [
-        { time: 'Sáng · 3h', title: 'pipeline() API', desc: 'Sentiment analysis, NER, text generation, translation.' },
-        { time: 'Chiều · 3h', title: 'Tokenizer & Model thủ công', desc: 'AutoTokenizer, AutoModel — thử tokenize và xem output thực tế.' },
-        { time: 'Tối · 1h', title: 'Note', desc: 'input_ids, attention_mask, padding/truncation là gì.' },
-      ]},
-      { dow: 'Thứ 5', theme: 'Fine-tuning với Hugging Face', blocks: [
-        { time: 'Sáng · 3h', title: 'Trainer API', desc: 'Học quy trình fine-tune: Trainer, TrainingArguments.' },
-        { time: 'Chiều · 3h', title: 'Fine-tune thực hành', desc: 'DistilBERT cho text classification (IMDB hoặc dataset tiếng Việt nhỏ).' },
-        { time: 'Tối · 1h', title: 'Note lỗi thường gặp', desc: 'Các bước fine-tune, lỗi OOM, learning rate không hội tụ.' },
-      ]},
-      { dow: 'Thứ 6', theme: 'Prompt Engineering', blocks: [
-        { time: 'Sáng · 2.5h', title: 'Tài liệu Anthropic', desc: 'Zero-shot, few-shot, chain-of-thought, structured output (XML tags).' },
-        { time: 'Chiều · 3h', title: 'Thực hành viết prompt', desc: '3 bài toán khác nhau (classification, extraction, summarization) — test và tinh chỉnh.' },
-        { time: 'Tối · 1h', title: 'Note', desc: 'Khi nào nên fine-tune model vs khi nào chỉ cần prompt engineering.' },
-      ]},
-      { dow: 'Thứ 7', theme: 'RAG cơ bản + LLM Integration', blocks: [
-        { time: 'Sáng · 3h', title: 'Khái niệm RAG', desc: 'Vector embedding, similarity search, vector DB cơ bản (FAISS/Chroma).' },
-        { time: 'Chiều · 3h', title: 'Thực hành RAG mini', desc: 'Embed vài đoạn văn bản, query, lấy kết quả liên quan, đưa vào prompt.' },
-        { time: 'Tối · 1h', title: 'Ôn flashcard tuần 3', desc: 'Xem lại toàn bộ note NLP/Transformer/Prompt trong tuần.' },
-      ]},
-      { dow: 'Chủ nhật', theme: 'Review + Mini Project', blocks: [
-        { time: 'Sáng · 2h', title: 'Mô phỏng phỏng vấn', desc: '10 câu hỏi về NLP/Transformer/Prompt Engineering.' },
-        { time: 'Chiều · 3h', title: 'Mini project tuần 3', desc: 'Demo nhỏ: input văn bản → pipeline NLP/LLM → output kết quả.' },
-        { time: 'Tối', title: 'Nghỉ ngơi', desc: 'Thư giãn, chuẩn bị cho tuần tích hợp cuối cùng.' },
-      ]},
-    ]},
-    { id: 'w4', tag: 'W4', title: 'Tuần 4', subtitle: 'FastAPI/MySQL/React + Project tổng hợp + Mock Interview', days: [
-      { dow: 'Thứ 2', theme: 'FastAPI cơ bản', blocks: [
-        { time: 'Sáng · 3h', title: 'Routing & Pydantic', desc: 'Routing, Pydantic model, request/response, async def vs def.' },
-        { time: 'Chiều · 3h', title: 'API mock đầu tiên', desc: 'POST endpoint nhận input, trả kết quả (mock trước, chưa cần model thật).' },
-        { time: 'Tối · 1h', title: 'Note', desc: 'FastAPI vs Flask khác nhau ở điểm nào (async, validation, docs tự sinh).' },
-      ]},
-      { dow: 'Thứ 3', theme: 'Tích hợp Model vào API', blocks: [
-        { time: 'Sáng · 3h', title: 'Load model vào FastAPI', desc: 'Load model ML/HF đã train, viết endpoint predict.' },
-        { time: 'Chiều · 3h', title: 'Test & xử lý lỗi', desc: 'Test bằng Postman/curl, try/except, HTTPException, validate input.' },
-        { time: 'Tối · 1h', title: 'Note deploy', desc: 'Cách deploy đơn giản (uvicorn, Docker cơ bản nếu có thời gian).' },
-      ]},
-      { dow: 'Thứ 4', theme: 'MySQL ôn tập', blocks: [
-        { time: 'Sáng · 3h', title: 'SQL cơ bản → trung bình', desc: 'SELECT, JOIN (INNER/LEFT/RIGHT), subquery, GROUP BY, HAVING.' },
-        { time: 'Chiều · 3h', title: 'SQL nâng cao', desc: 'INDEX (vì sao cần, cách hoạt động), transaction (ACID), normalization cơ bản.' },
-        { time: 'Tối · 1h', title: 'Luyện đề', desc: '10-15 bài SQL trên LeetCode Database hoặc HackerRank SQL.' },
-      ]},
-      { dow: 'Thứ 5', theme: 'Kết nối MySQL với FastAPI', blocks: [
-        { time: 'Sáng · 3h', title: 'ORM & kết nối DB', desc: 'SQLAlchemy hoặc mysql-connector, tạo model/schema.' },
-        { time: 'Chiều · 3h', title: 'CRUD API', desc: 'Viết API Create/Read đơn giản, lưu log prediction vào MySQL.' },
-        { time: 'Tối · 1h', title: 'Note', desc: 'ORM là gì, lợi ích so với raw SQL.' },
-      ]},
-      { dow: 'Thứ 6', theme: 'React cơ bản', blocks: [
-        { time: 'Sáng · 2.5h', title: 'Component & State', desc: 'Component, useState, props, useEffect cơ bản.' },
-        { time: 'Chiều · 3h', title: 'Form gọi API', desc: 'Form input + button gọi API FastAPI (fetch), hiển thị kết quả.' },
-        { time: 'Tối · 1h', title: 'Note', desc: 'Controlled vs uncontrolled component khác nhau thế nào.' },
-      ]},
-      { dow: 'Thứ 7', theme: 'Ráp Project tổng hợp', blocks: [
-        { time: 'Sáng · 3h', title: 'Ráp full stack', desc: 'React (frontend) → FastAPI (backend) → Model NLP/LLM → MySQL (lưu log).' },
-        { time: 'Chiều · 3h', title: 'Test end-to-end', desc: 'Chạy thử toàn bộ luồng, sửa lỗi phát sinh.' },
-        { time: 'Tối · 1h', title: 'Viết README', desc: 'Mô tả project ngắn gọn để dùng khi phỏng vấn/CV.' },
-      ]},
-      { dow: 'Chủ nhật', theme: 'Tổng ôn tập + Mock Interview', blocks: [
-        { time: 'Sáng · 2h', title: 'Tổng ôn 4 tuần', desc: 'Xem lại toàn bộ flashcard, liệt kê các điểm còn yếu cần ôn thêm.' },
-        { time: 'Chiều · 3h', title: 'Mock interview', desc: '15-20 câu hỏi kỹ thuật tổng hợp: Python, ML, NLP, System Design cơ bản (tự hỏi hoặc nhờ bạn).' },
-        { time: 'Tối · 1h', title: 'Chuẩn bị cuối cùng', desc: 'Câu chuyện kể về project, ôn CV, chuẩn bị câu hỏi để hỏi ngược nhà tuyển dụng.' },
-      ]},
-    ]},
-  ];
+import { W1 } from './w1.js';
+import { W2 } from './w2.js';
+import { W3 } from './w3.js';
+import { W4 } from './w4.js';
 
+(function () {
+  const DATA = [W1, W2, W3, W4];
   const root = document.getElementById('app-root');
   let checks = {};
 
-  function taskId(wi, di, bi) { return 'w' + wi + 'd' + di + 'b' + bi; }
+  function subId(wi, di, bi, si) { return 'w' + wi + 'd' + di + 'b' + bi + 's' + si; }
 
   function hashFor(wi, di) {
     const n = wi * 10 + di;
@@ -162,20 +17,24 @@
 
   function loadChecks() {
     try {
-      const res = localStorage.getItem('study-plan-checks');
+      const res = localStorage.getItem('study-plan-checks-v2');
       if (res) checks = JSON.parse(res);
     } catch (e) { checks = {}; }
     render();
   }
 
   function saveChecks() {
-    try { localStorage.setItem('study-plan-checks', JSON.stringify(checks)); }
+    try { localStorage.setItem('study-plan-checks-v2', JSON.stringify(checks)); }
     catch (e) { /* ignore */ }
   }
 
-  function totalTasks() {
+  function totalSubs() {
     let t = 0;
-    DATA.forEach(w => w.days.forEach(d => t += d.blocks.length));
+    DATA.forEach(function (w) {
+      w.days.forEach(function (d) {
+        d.blocks.forEach(function (b) { t += (b.subs || []).length; });
+      });
+    });
     return t;
   }
 
@@ -184,116 +43,112 @@
   }
 
   function render() {
-    const total = totalTasks();
+    const total = totalSubs();
     const done = checkedCount();
     const pct = total ? Math.round((done / total) * 100) : 0;
 
-    let html = `
-      <div class="wrap">
-        <div class="hero">
-          <div class="hero-eyebrow">// lo-trinh-on-tap --interview-prep --duration=28d</div>
-          <h1>Lộ trình ôn luyện 4 tuần</h1>
-          <p>Python · Pandas/NumPy · ML/DL · NLP/HuggingFace · Prompt Engineering · FastAPI · MySQL · React</p>
-          <div class="progress-row">
-            <div class="progress-track">
-              <div class="progress-fill" style="width: ${pct}%"></div>
-            </div>
-            <div class="progress-label">${done}/${total} · ${pct}%</div>
-          </div>
-          <button class="reset-btn" id="reset-btn">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 4px; vertical-align: middle;"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
-            Đặt lại toàn bộ tiến độ
-          </button>
-        </div>
-    `;
+    let html = '<div class="wrap">';
+    html += '<div class="hero">';
+    html += '<div class="hero-eyebrow">// lo-trinh-on-tap --interview-prep --duration=28d</div>';
+    html += '<h1>Lộ trình ôn luyện 4 tuần</h1>';
+    html += '<p>Python · Pandas/NumPy · ML/DL · NLP/HuggingFace · Prompt Engineering · FastAPI · MySQL · React</p>';
+    html += '<div class="progress-row"><div class="progress-track"><div class="progress-fill" style="width:' + pct + '%"></div></div>';
+    html += '<div class="progress-label">' + done + '/' + total + ' · ' + pct + '%</div></div>';
+    html += '<button class="reset-btn" id="reset-btn">';
+    html += '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right:4px;vertical-align:middle"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>';
+    html += 'Đặt lại toàn bộ tiến độ</button>';
+    html += '</div>';
 
-    DATA.forEach((w, wi) => {
-      let wDone = 0, wTotal = 0;
-      w.days.forEach((d, di) => d.blocks.forEach((b, bi) => {
-        wTotal++;
-        if (checks[taskId(wi, di, bi)]) wDone++;
-      }));
-      const wPct = wTotal ? Math.round((wDone / wTotal) * 100) : 0;
-      const wComplete = wDone === wTotal;
+    DATA.forEach(function (w, wi) {
+      var wDone = 0, wTotal = 0;
+      w.days.forEach(function (d, di) {
+        d.blocks.forEach(function (b, bi) {
+          (b.subs || []).forEach(function (s, si) {
+            wTotal++;
+            if (checks[subId(wi, di, bi, si)]) wDone++;
+          });
+        });
+      });
+      var wPct = wTotal ? Math.round((wDone / wTotal) * 100) : 0;
+      var wComplete = wDone === wTotal && wTotal > 0;
 
-      html += `
-        <details class="week"${wi === 0 ? ' open' : ''}>
-          <summary class="week-head">
-            <span class="week-tag">${w.tag}</span>
-            <div class="week-titles">
-              <div class="wt">${w.title} — ${w.subtitle}</div>
-              <div class="ws">${wDone}/${wTotal} việc đã hoàn thành</div>
-            </div>
-            <div class="week-mini-track">
-              <div class="week-mini-fill" style="width: ${wPct}%; background: ${wComplete ? 'var(--amber)' : 'var(--teal)'}"></div>
-            </div>
-            <span class="week-caret">▸</span>
-          </summary>
-          <div class="days">
-      `;
+      html += '<details class="week"' + (wi === 0 ? ' open' : '') + '>';
+      html += '<summary class="week-head">';
+      html += '<span class="week-tag">' + w.tag + '</span>';
+      html += '<div class="week-titles"><div class="wt">' + w.title + ' — ' + w.subtitle + '</div>';
+      html += '<div class="ws">' + wDone + '/' + wTotal + ' việc đã hoàn thành</div></div>';
+      html += '<div class="week-mini-track"><div class="week-mini-fill" style="width:' + wPct + '%;background:' + (wComplete ? 'var(--amber)' : 'var(--teal)') + '"></div></div>';
+      html += '<span class="week-caret">▸</span>';
+      html += '</summary><div class="days">';
 
-      w.days.forEach((d, di) => {
-        const dDone = d.blocks.filter((b, bi) => checks[taskId(wi, di, bi)]).length;
-        const dComplete = dDone === d.blocks.length;
-        
-        html += `
-          <div class="day-card${dComplete ? ' done' : ''}">
-            <div class="day-head">
-              <span class="day-hash">#${hashFor(wi + 1, di + 1)}</span>
-              <span class="day-dow">${d.dow}</span>
-              <span class="day-theme">${d.theme}</span>
-            </div>
-            <div class="blocks">
-        `;
+      w.days.forEach(function (d, di) {
+        var dDone = 0, dTotal = 0;
+        d.blocks.forEach(function (b, bi) {
+          (b.subs || []).forEach(function (s, si) {
+            dTotal++;
+            if (checks[subId(wi, di, bi, si)]) dDone++;
+          });
+        });
+        var dComplete = dDone === dTotal && dTotal > 0;
 
-        d.blocks.forEach((b, bi) => {
-          const id = taskId(wi, di, bi);
-          const isChecked = !!checks[id];
-          html += `
-            <label class="task${isChecked ? ' checked' : ''}" data-id="${id}">
-              <input type="checkbox"${isChecked ? ' checked' : ''} data-id="${id}"/>
-              <span class="box"></span>
-              <span class="task-body">
-                <span class="task-time">${b.time}</span>
-                <span class="task-title">${b.title}</span>
-                <span class="task-desc"> — ${b.desc}</span>
-              </span>
-            </label>
-          `;
+        html += '<div class="day-card' + (dComplete ? ' done' : '') + '">';
+        html += '<div class="day-head"><span class="day-hash">#' + hashFor(wi + 1, di + 1) + '</span>';
+        html += '<span class="day-dow">' + d.dow + '</span>';
+        html += '<span class="day-theme">' + d.theme + '</span></div>';
+        html += '<div class="blocks">';
+
+        d.blocks.forEach(function (b, bi) {
+          var bDone = 0;
+          var subs = b.subs || [];
+          subs.forEach(function (s, si) {
+            if (checks[subId(wi, di, bi, si)]) bDone++;
+          });
+          var bComplete = bDone === subs.length && subs.length > 0;
+
+          html += '<div class="block-group' + (bComplete ? ' block-done' : '') + '">';
+          html += '<div class="block-header">';
+          html += '<span class="task-time">' + b.time + '</span>';
+          html += '<span class="block-title">' + b.title + '</span>';
+          html += '<span class="block-count">' + bDone + '/' + subs.length + '</span>';
+          html += '</div>';
+          html += '<div class="sub-list">';
+
+          subs.forEach(function (s, si) {
+            var id = subId(wi, di, bi, si);
+            var isChecked = !!checks[id];
+            html += '<label class="sub-item' + (isChecked ? ' checked' : '') + '" data-id="' + id + '">';
+            html += '<input type="checkbox"' + (isChecked ? ' checked' : '') + ' data-id="' + id + '"/>';
+            html += '<span class="box"></span>';
+            html += '<span class="sub-text">' + s + '</span>';
+            html += '</label>';
+          });
+
+          html += '</div></div>';
         });
 
-        html += `
-            </div>
-          </div>
-        `;
+        html += '</div></div>';
       });
 
-      html += `
-          </div>
-        </details>
-      `;
+      html += '</div></details>';
     });
 
-    html += `
-        <div class="footer-note">tiến độ được lưu tự động trên trình duyệt này</div>
-      </div>
-    `;
+    html += '<div class="footer-note">tiến độ được lưu tự động trên trình duyệt này</div>';
+    html += '</div>';
 
     root.innerHTML = html;
 
-    // Attach event listeners
-    root.querySelectorAll('input[type="checkbox"]').forEach(cb => {
-      cb.addEventListener('change', (e) => {
-        const id = e.target.getAttribute('data-id');
+    root.querySelectorAll('input[type="checkbox"]').forEach(function (cb) {
+      cb.addEventListener('change', function (e) {
+        var id = e.target.getAttribute('data-id');
         checks[id] = e.target.checked;
         saveChecks();
         render();
       });
     });
 
-    const resetBtn = document.getElementById('reset-btn');
+    var resetBtn = document.getElementById('reset-btn');
     if (resetBtn) {
-      resetBtn.addEventListener('click', () => {
+      resetBtn.addEventListener('click', function () {
         if (confirm('Xoá toàn bộ tiến độ đã tick? Hành động này không thể hoàn tác.')) {
           checks = {};
           saveChecks();

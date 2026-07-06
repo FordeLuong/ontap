@@ -320,38 +320,103 @@ details.week[open] .week-caret {
   margin-top: 10px;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 10px;
 }
 
-.task {
-  display: flex;
-  align-items: flex-start;
-  gap: 12px;
-  padding: 10px 14px;
-  border-radius: 10px;
+.block-group {
   background: var(--surface);
   border: 1px solid transparent;
-  transition: all 0.2s ease;
-  cursor: pointer;
+  border-radius: 10px;
+  padding: 12px 14px;
+  transition: border-color 0.2s ease;
 }
 
-.task:hover {
+.block-group:hover {
   border-color: var(--border);
-  background: rgba(26, 35, 59, 0.4);
-  transform: translateX(2px);
 }
 
-.task input[type="checkbox"] {
+.block-group.block-done {
+  border-color: rgba(16, 185, 129, 0.25);
+  background: linear-gradient(180deg, var(--surface) 0%, rgba(16, 185, 129, 0.02) 100%);
+}
+
+.block-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+  flex-wrap: wrap;
+}
+
+.task-time {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--amber);
+  letter-spacing: 0.03em;
+  font-weight: 600;
+  background: rgba(245, 158, 11, 0.08);
+  padding: 2px 8px;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+
+.block-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text);
+  flex: 1;
+}
+
+.block-done .block-title {
+  color: var(--text-muted);
+}
+
+.block-count {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--text-muted);
+  background: var(--surface-alt);
+  padding: 2px 8px;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+
+.block-done .block-count {
+  color: var(--teal);
+  background: rgba(16, 185, 129, 0.1);
+}
+
+.sub-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-left: 4px;
+}
+
+.sub-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.sub-item:hover {
+  background: rgba(26, 35, 59, 0.5);
+}
+
+.sub-item input[type="checkbox"] {
   display: none;
 }
 
-.task .box {
-  width: 20px;
-  height: 20px;
-  border-radius: 6px;
+.sub-item .box {
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
   border: 1.5px solid var(--border);
   flex-shrink: 0;
-  margin-top: 2px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -360,74 +425,33 @@ details.week[open] .week-caret {
   transition: all 0.2s ease;
 }
 
-.task:hover .box {
+.sub-item:hover .box {
   border-color: var(--text-muted);
 }
 
-.task input[type="checkbox"]:checked + .box {
+.sub-item input[type="checkbox"]:checked + .box {
   background: var(--teal);
   border-color: var(--teal);
-  box-shadow: 0 0 8px rgba(16, 185, 129, 0.4);
+  box-shadow: 0 0 6px rgba(16, 185, 129, 0.3);
 }
 
-.task input[type="checkbox"]:checked + .box::after {
+.sub-item input[type="checkbox"]:checked + .box::after {
   content: '✓';
   color: var(--bg);
-  font-size: 13px;
+  font-size: 10px;
   font-weight: 800;
 }
 
-.task-body {
-  flex: 1;
-  cursor: pointer;
-}
-
-.task-time {
-  font-family: var(--mono);
-  font-size: 11px;
-  color: var(--amber);
-  letter-spacing: 0.03em;
-  display: inline-block;
-  margin-bottom: 4px;
-  font-weight: 600;
-  background: rgba(245, 158, 11, 0.08);
-  padding: 1px 6px;
-  border-radius: 4px;
-}
-
-.task-title {
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--text);
-  line-height: 1.5;
-}
-
-.task-desc {
+.sub-text {
   font-size: 13px;
-  color: var(--text-muted);
-  margin-top: 4px;
-  line-height: 1.5;
+  color: var(--text);
+  line-height: 1.4;
 }
 
-.task.checked {
-  background: rgba(19, 26, 44, 0.2);
-}
-
-.task.checked .task-title {
+.sub-item.checked .sub-text {
   color: var(--text-muted);
   text-decoration: line-through;
   text-decoration-color: var(--border);
-}
-
-.task.checked .task-desc {
-  color: rgba(156, 163, 175, 0.5);
-  text-decoration: line-through;
-  text-decoration-color: rgba(34, 46, 77, 0.5);
-}
-
-.task.checked .task-time {
-  color: rgba(245, 158, 11, 0.4);
-  background: rgba(245, 158, 11, 0.02);
 }
 
 .footer-note {
