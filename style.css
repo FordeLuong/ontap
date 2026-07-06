@@ -454,6 +454,24 @@ details.week[open] .week-caret {
   text-decoration-color: var(--border);
 }
 
+.sub-link {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--teal);
+  text-decoration: none;
+  border-bottom: 1px dashed rgba(16, 185, 129, 0.5);
+  margin-left: auto;
+  opacity: 0.8;
+  transition: opacity 0.2s ease, border-bottom-color 0.2s ease;
+  white-space: nowrap;
+  padding-left: 12px;
+}
+
+.sub-link:hover {
+  opacity: 1;
+  border-bottom-color: var(--teal);
+}
+
 .footer-note {
   text-align: center;
   color: var(--text-muted);

@@ -116,10 +116,16 @@ import { W4 } from './w4.js';
           subs.forEach(function (s, si) {
             var id = subId(wi, di, bi, si);
             var isChecked = !!checks[id];
+            var text = typeof s === 'string' ? s : s.t;
+            var link = typeof s === 'object' && s.link ? s.link : null;
+            
             html += '<label class="sub-item' + (isChecked ? ' checked' : '') + '" data-id="' + id + '">';
             html += '<input type="checkbox"' + (isChecked ? ' checked' : '') + ' data-id="' + id + '"/>';
             html += '<span class="box"></span>';
-            html += '<span class="sub-text">' + s + '</span>';
+            html += '<span class="sub-text">' + text + '</span>';
+            if (link) {
+              html += '<a href="' + link + '" target="_blank" class="sub-link" onclick="event.stopPropagation()">mở trang →</a>';
+            }
             html += '</label>';
           });
 
